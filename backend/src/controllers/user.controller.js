@@ -37,5 +37,42 @@ export async function registerUser(req, res, next) {
 
   const token = await user.generateToken();
 
-  res.status(201).json({ token: token, user });
+  //Allow direct login
+
+  res
+    .cookie("token", token)
+    .status(201)
+    .json({ user, message: "User Register and LogIn Successful!" });
+}
+
+export async function loginUser(req, res, next) {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    // return res.status(400).json({ Error: errors.array() });
+    return res.status(400).json({
+      error: errors.array() || "Incomplete or incorrect details shared!",
+    });
+  }
+
+  const { email, password } = req.body;
+
+  // find the user
+  // Using select("+password") to add password field to default selection
+  const user = await userModel.findOne({ email }).select("+password");
+  if (!user) {
+    return res.status(401).json({ message: "Invalid email or password!" });
+  }
+
+  // Verify the user identity - bcrypt
+  const isMatch = await user.comparePassword(password);
+  if (!isMatch) {
+    return res.status(401).json({ message: "Invalid email or password!" });
+  }
+
+  const token = await user.generateToken();
+  res
+    .cookie("token", token)
+    .status(201)
+    .json({ message: `Welcome ${user.fullname.firstName}` });
 }

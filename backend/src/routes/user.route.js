@@ -26,4 +26,23 @@ userRouter.post(
   registerUser
 );
 
+userRouter.post(
+  "/login",
+  [
+    body("email")
+      .exists()
+      .withMessage("Email is required")
+      .notEmpty()
+      .withMessage("Email must not be empty")
+      .isEmail()
+      .withMessage("Invalide email!"),
+    body("password")
+      .exists()
+      .withMessage("Password is required")
+      .notEmpty()
+      .withMessage("Password must not be empty"),
+  ],
+  loginUser
+);
+
 export default userRouter;
