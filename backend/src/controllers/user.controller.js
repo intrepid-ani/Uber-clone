@@ -1,6 +1,7 @@
 import { validationResult } from "express-validator";
 import { createUser } from "../services/user.sevice.js";
 import userModel from "../models/user.model.js";
+import blacklistToken from "../models/blacklistToken.model.js";
 
 export async function registerUser(req, res, next) {
   // Verifing the details
@@ -87,4 +88,13 @@ export async function loginUser(req, res, next) {
 
 export async function getProfile(req, res) {
   res.status(201).json(req.user);
+}
+
+export async function logoutUser(req, res) {
+  const token = req.token;
+  res.clearCookie("token");
+
+  const addToBlacklist = await blacklistToken.create({ token });
+
+  res.status(201).json({ message: "Logout successfully!" });
 }
