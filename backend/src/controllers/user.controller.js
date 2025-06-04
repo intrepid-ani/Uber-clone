@@ -34,13 +34,17 @@ export async function registerUser(req, res, next) {
     email,
     password: hashedPassword,
   });
-
   const token = await user.generateToken();
 
   //Allow direct login
 
   res
-    .cookie("token", token)
+    .cookie("token", token, {
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours
+      sameSite: "none", // needed for cross-site requests
+      secure: process.env.NODE_ENV === "production", // only use in production for security
+    })
     .status(201)
     .json({ user, message: "User Register and LogIn Successful!" });
 }
@@ -69,10 +73,18 @@ export async function loginUser(req, res, next) {
   if (!isMatch) {
     return res.status(401).json({ message: "Invalid email or password!" });
   }
-
   const token = await user.generateToken();
   res
-    .cookie("token", token)
+    .cookie("token", token, {
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours
+      sameSite: "none", // needed for cross-site requests
+      secure: process.env.NODE_ENV === "production", // only use in production for security
+    })
     .status(201)
     .json({ message: `Welcome ${user.fullname.firstName}` });
+}
+
+export async function getProfile(req, res) {
+  res.status(201).json(req.user);
 }
