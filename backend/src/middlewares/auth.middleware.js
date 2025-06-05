@@ -1,6 +1,7 @@
 import userModel from "../models/user.model.js";
 import blacklistToken from "../models/blacklistToken.model.js";
 import jwt from "jsonwebtoken";
+import captainModel from "../models/captain.model.js";
 
 export async function userAuth(req, res, next) {
   // Get token from various sources
@@ -35,19 +36,26 @@ export async function userAuth(req, res, next) {
   if (inBlacklist) {
     return res.status(401).json({ message: "Unauthorized" });
   }
+
   try {
     const decoded = jwt.verify(checkToken, process.env.JWT_SCERTE);
     const id = decoded._id;
     const user = await userModel.findById(id);
+    const captain = await captainModel.findById(id);
 
-    if (!user) {
+    if (user) {
+      req.user = user;
+      req.token = checkToken;
+    } else if (captain) {
+      req.captain = captain;
+      req.token = checkToken;
+    } else {
       return res.status(401).json({ message: "User not found" });
     }
-
-    req.user = user;
-    req.token = checkToken;
+    console.log("HELLO");
     next();
   } catch (error) {
+    console.log("Error: ", error);
     return res.status(401).json({ message: "Invalid token" });
   }
 }

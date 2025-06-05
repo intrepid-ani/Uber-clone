@@ -1,41 +1,40 @@
 import { validationResult } from "express-validator";
-import { createUser } from "../services/user.sevice.js";
-import userModel from "../models/user.model.js";
 import blacklistToken from "../models/blacklistToken.model.js";
+import captainModel from "../models/captain.model.js";
+import { createCaptain } from "../services/user.sevice.js";
 
-export async function registerUser(req, res, next) {
-  // Verifing the details
-  const validatRes = validationResult(req);
-  if (!validatRes.isEmpty()) {
+export async function registerCaptain(req, res) {
+  const result = validationResult(req);
+  if (!result.isEmpty()) {
     return res
       .status(400)
       .json({ error: "Incomplete or incorrect details shared!" });
   }
 
-  const { fullname, email, password } = req.body;
+  //   get data from the body
+  const { fullname, email, password, vehicle } = req.body;
 
-  // Check weather the users already there
-  const isUserExists = await userModel.findOne({ email });
-  if (isUserExists) {
+  // Check Captain exists
+  const isCaptainExists = await captainModel.findOne({ email });
+  if (isCaptainExists) {
     return res
       .status(400)
-      .json({ message: "User already exist with email shared" });
+      .json({ message: "Captain already exist with email shared" });
   }
 
-  // hashing the password
-  const hashedPassword = await userModel.hashPassword(password);
-  console.log(hashedPassword);
+  //   hashing password
+  const hashedPassword = await captainModel.hashPassword(password);
 
-  const user = await createUser({
+  const captian = await createCaptain({
     firstName: fullname.firstName,
     lastName: fullname.lastName,
     email,
     password: hashedPassword,
+    vehicle,
   });
-  const token = await user.generateToken();
+  const token = await captian.generateToken();
 
   //Allow direct login
-
   res
     .cookie("token", token, {
       httpOnly: true,
@@ -44,10 +43,10 @@ export async function registerUser(req, res, next) {
       secure: process.env.NODE_ENV === "production", // only use in production for security
     })
     .status(201)
-    .json({ user, message: "User Register and LogIn Successful!" });
+    .json({ captian, message: "Captian Register and LogIn Successful!" });
 }
 
-export async function loginUser(req, res, next) {
+export async function loginCaptain(req, res, next) {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
@@ -59,19 +58,19 @@ export async function loginUser(req, res, next) {
 
   const { email, password } = req.body;
 
-  // find the user
+  // find the captain
   // Using select("+password") to add password field to default selection
-  const user = await userModel.findOne({ email }).select("+password");
-  if (!user) {
+  const captain = await captainModel.findOne({ email }).select("+password");
+  if (!captain) {
     return res.status(401).json({ message: "Invalid email or password!" });
   }
 
-  // Verify the user identity - bcrypt
-  const isMatch = await user.comparePassword(password);
+  // Verify the captain identity - bcrypt
+  const isMatch = await captain.comparePassword(password);
   if (!isMatch) {
     return res.status(401).json({ message: "Invalid email or password!" });
   }
-  const token = await user.generateToken();
+  const token = await captain.generateToken();
   res
     .cookie("token", token, {
       httpOnly: true,
@@ -80,18 +79,17 @@ export async function loginUser(req, res, next) {
       secure: process.env.NODE_ENV === "production", // only use in production for security
     })
     .status(201)
-    .json({ message: `Welcome ${user.fullname.firstName}` });
+    .json({ message: `Welcome ${captain.fullname.firstName}` });
 }
 
 export async function getProfile(req, res) {
-  res.status(201).json(req.user);
+  res.status(201).json(req.captain);
 }
 
-export async function logoutUser(req, res) {
+export async function logoutCaptian(req, res) {
   const token = req.token;
   res.clearCookie("token");
-
-  const addToBlacklist = await blacklistToken.create({ token });
+  await blacklistToken.create({ token });
 
   res.status(201).json({ message: "Logout successfully!" });
 }
