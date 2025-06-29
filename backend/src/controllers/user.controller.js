@@ -9,7 +9,7 @@ export async function registerUser(req, res, next) {
   if (!validatRes.isEmpty()) {
     return res
       .status(400)
-      .json({ error: "Incomplete or incorrect details shared!" });
+      .json({ message: "Incomplete or incorrect details shared!" });
   }
 
   const { fullname, email, password } = req.body;
