@@ -15,7 +15,7 @@ captainRouter.post(
   [
     body("fullname.firstName")
       .isLength({ min: 3 })
-      .withMessage("firt name must consist of 3+ characters!"),
+      .withMessage("first name must consist of 3+ characters!"),
     body("email")
       .isEmail()
       .withMessage("Invalide email!")
