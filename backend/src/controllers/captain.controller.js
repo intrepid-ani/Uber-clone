@@ -5,6 +5,7 @@ import { createCaptain } from "../services/user.sevice.js";
 
 export async function registerCaptain(req, res) {
   const result = validationResult(req);
+  console.log(result);
   if (!result.isEmpty()) {
     return res
       .status(400)

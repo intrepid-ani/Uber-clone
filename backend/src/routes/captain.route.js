@@ -40,7 +40,7 @@ captainRouter.post(
     body("vehicle.type")
       .exists()
       .withMessage("Vechile Type is required")
-      .isIn(["MotorBike", "auto", "car"])
+      .isIn(["motorBike", "auto", "car"])
       .withMessage("Invalid Input!"),
     body("vehicle.capacity")
       .isNumeric()
