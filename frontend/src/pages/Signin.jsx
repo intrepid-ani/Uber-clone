@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { use, useState } from "react";
 import { Link } from "react-router";
 import axios from "axios";
 import { toast } from "react-hot-toast";
+import useUserData from "../context/UserContext";
+import { useNavigate } from "react-router";
 
 function Signin() {
   const [user, setUser] = useState({
@@ -11,6 +13,11 @@ function Signin() {
     password: "",
   });
 
+  const navigate = useNavigate();
+  console.log(navigate);
+
+  const { setUserContext } = useUserData(); // Moved useUserData to the top level
+
   const handleChange = (e) => {
     setUser((prevData) => ({ ...prevData, [e.target.name]: e.target.value }));
   };
@@ -18,19 +25,28 @@ function Signin() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      const userData = {
+        fullname: {
+          firstName: user.firstName,
+          lastName: user.lastName,
+        },
+        email: user.email,
+        password: user.password,
+      };
+
       const response = await axios.post(
         `${import.meta.env.VITE_END_POINT}/user/register`,
-        {
-          fullname: {
-            firstName: user.firstName,
-            lastName: user.lastName,
-          },
-          email: user.email,
-          password: user.password,
-        }
+        userData
       );
-      toast.success(`${response.data?.message}`);
+      console.log(response);
+      if (response.status >= 200) {
+        toast.success(`${response.data?.message}`);
+        localStorage.setItem("token", response.data.token);
+        setUserContext(userData); // Use setUserContext here
+        navigate("/home");
+      }
     } catch (error) {
+      console.log(error);
       if (error.response && error.response.status === 400) {
         toast.error(error.response.data.message);
       } else {
@@ -39,6 +55,7 @@ function Signin() {
       }
     }
   };
+
   return (
     <div className=" flex justify-center items-center bg-black">
       <div className="  shadow-lg rounded-lg px-8 py-4 w-full max-w-sm">

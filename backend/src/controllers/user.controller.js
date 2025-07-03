@@ -44,7 +44,7 @@ export async function registerUser(req, res, next) {
       secure: process.env.NODE_ENV === "production", // only use in production for security
     })
     .status(201)
-    .json({ user, message: "User Register and LogIn Successful!" });
+    .json({ user, message: "User Register and LogIn Successful!", token });
 }
 
 export async function loginUser(req, res, next) {
@@ -80,7 +80,17 @@ export async function loginUser(req, res, next) {
       secure: process.env.NODE_ENV === "production", // only use in production for security
     })
     .status(201)
-    .json({ message: `Welcome ${user.fullname.firstName}` });
+    .json({
+      message: `Welcome ${user.fullname.firstName}`,
+      loginData: {
+        fullname: {
+          firstName: user.fullname.firstName,
+          lastName: user.fullname.lastName,
+        },
+        email: user.email,
+      },
+      token,
+    });
 }
 
 export async function getProfile(req, res) {

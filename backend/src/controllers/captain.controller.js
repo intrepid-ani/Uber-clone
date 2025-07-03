@@ -44,7 +44,11 @@ export async function registerCaptain(req, res) {
       secure: process.env.NODE_ENV === "production", // only use in production for security
     })
     .status(201)
-    .json({ captian, message: "Captian Register and LogIn Successful!" });
+    .json({
+      captian,
+      message: "Captian Register and LogIn Successful!",
+      token,
+    });
 }
 
 export async function loginCaptain(req, res, next) {
@@ -80,7 +84,25 @@ export async function loginCaptain(req, res, next) {
       secure: process.env.NODE_ENV === "production", // only use in production for security
     })
     .status(201)
-    .json({ message: `Welcome ${captain.fullname.firstName}` });
+    .json({
+      message: `Welcome ${captain.fullname.firstName}`,
+      loginData: {
+        loginData: {
+          fullname: {
+            firstName: captain.fullname.firstName,
+            lastName: captain.fullname.lastName,
+          },
+          email: captain.email,
+        },
+        vehicle: {
+          name: captain.vehicleName,
+          numPlate: captain.numPlate,
+          type: captain.vehicleType,
+          capacity: captain.capacity,
+        },
+      },
+      token,
+    });
 }
 
 export async function getProfile(req, res) {
