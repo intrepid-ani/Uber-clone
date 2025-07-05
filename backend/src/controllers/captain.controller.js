@@ -106,7 +106,11 @@ export async function loginCaptain(req, res, next) {
 }
 
 export async function getProfile(req, res) {
-  res.status(201).json(req.captain);
+  if (req.captain) {
+    res.status(201).json(req.captain);
+  } else {
+    res.status(400).json({ message: "Captain not found" });
+  }
 }
 
 export async function logoutCaptian(req, res) {

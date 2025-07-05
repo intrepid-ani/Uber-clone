@@ -52,7 +52,7 @@ export async function userAuth(req, res, next) {
     } else {
       return res.status(401).json({ message: "User not found" });
     }
-    console.log("HELLO");
+
     next();
   } catch (error) {
     console.log("Error: ", error);

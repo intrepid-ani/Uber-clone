@@ -58,7 +58,7 @@ function Login() {
       <div className="shadow-lg rounded-lg px-8 py-4 w-full max-w-sm">
         <h2 className="text-xl font-bold text-center bg-gradient-to-bl from-gray-200 to-gray-100 text-transparent bg-clip-text mb-6">
           Welcome back,
-          <br /> Log in to continue
+          <br /> Log In to continue
         </h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">

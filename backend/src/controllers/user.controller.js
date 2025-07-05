@@ -94,7 +94,12 @@ export async function loginUser(req, res, next) {
 }
 
 export async function getProfile(req, res) {
-  res.status(201).json(req.user);
+  // res.status(201).json(req.user);
+  if (req.user) {
+    res.status(201).json(req.user);
+  } else {
+    res.status(400).json({ message: "user not found" });
+  }
 }
 
 export async function logoutUser(req, res) {
