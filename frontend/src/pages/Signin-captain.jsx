@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { Link } from "react-router";
-import useCaptainData from "../context/CaptainContext";
+import useCaptianContext from "../context/CaptainContext";
 import { useNavigate } from "react-router";
 
 function SigninCaptain() {
@@ -18,7 +18,7 @@ function SigninCaptain() {
   });
 
   const navigate = useNavigate();
-  const { captainContext, setCaptainContext } = useCaptainData();
+  const { captainContext, setCaptainContext } = useCaptianContext();
 
   const handleChange = (e) => {
     const { name, value } = e.target;

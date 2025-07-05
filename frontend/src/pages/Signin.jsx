@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router";
 import axios from "axios";
 import { toast } from "react-hot-toast";
-import useUserData from "../context/UserContext";
+import useUserContext from "../context/UserContext";
 import { useNavigate } from "react-router";
 
 function Signin() {
@@ -15,7 +15,7 @@ function Signin() {
 
   const navigate = useNavigate();
 
-  const { setUserContext } = useUserData(); // Moved useUserData to the top level
+  const { setUserContext } = useUserContext();
 
   const handleChange = (e) => {
     setUser((prevData) => ({ ...prevData, [e.target.name]: e.target.value }));

@@ -5,15 +5,15 @@ export const captainDataContext = createContext();
 export function CaptainDataProvider({ children }) {
   const [captainContext, setCaptainContext] = useState({
     fullname: {
-      firstName: "",
-      lastName: "",
+      firstName: null,
+      lastName: null,
     },
-    email: "",
+    email: null,
     vehicle: {
-      name: "",
-      numPlate: "",
-      type: "",
-      capacity: "",
+      name: null,
+      numPlate: null,
+      type: null,
+      capacity: null,
     },
   });
 
@@ -24,6 +24,6 @@ export function CaptainDataProvider({ children }) {
   );
 }
 
-export default function useCaptainData() {
+export default function useCaptianContext() {
   return useContext(captainDataContext);
 }

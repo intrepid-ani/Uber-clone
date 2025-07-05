@@ -2,8 +2,8 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { Link, useNavigate } from "react-router";
-import useUserData from "../context/UserContext.jsx";
-import useCaptainData from "../context/CaptainContext.jsx";
+import useUserContext from "../context/UserContext.jsx";
+import useCaptianContext from "../context/CaptainContext.jsx";
 
 function Login() {
   const [user, setUser] = useState({
@@ -14,8 +14,8 @@ function Login() {
 
   const navigate = useNavigate();
 
-  const { setUserContext } = useUserData();
-  const { setCaptainContext } = useCaptainData();
+  const { setUserContext } = useUserContext();
+  const { setCaptainContext } = useCaptianContext();
 
   const handleChange = (e) => {
     const { name, value } = e.target;

@@ -4,8 +4,8 @@ export const userDataContext = createContext();
 
 export function UserDataProvider({ children }) {
   const [userContext, setUserContext] = useState({
-    fullname: { firstName: "", lastName: "" },
-    email: "",
+    fullname: { firstName: null, lastName: null },
+    email: null,
   });
 
   return (
@@ -15,6 +15,6 @@ export function UserDataProvider({ children }) {
   );
 }
 
-export default function useUserData() {
+export default function useUserContext() {
   return useContext(userDataContext);
 }
