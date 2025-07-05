@@ -1,4 +1,4 @@
-import { use, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router";
 import axios from "axios";
 import { toast } from "react-hot-toast";
@@ -14,7 +14,6 @@ function Signin() {
   });
 
   const navigate = useNavigate();
-  console.log(navigate);
 
   const { setUserContext } = useUserData(); // Moved useUserData to the top level
 
@@ -38,7 +37,6 @@ function Signin() {
         `${import.meta.env.VITE_END_POINT}/user/register`,
         userData
       );
-      console.log(response);
       if (response.status >= 200) {
         toast.success(`${response.data?.message}`);
         localStorage.setItem("token", response.data.token);
@@ -125,6 +123,7 @@ function Signin() {
               placeholder="Enter your password"
               value={user.password}
               onChange={handleChange}
+              autoComplete="true"
               className=" rounded-lg px-4 py-1.5 w-full bg-neutral-900 text-white focus:outline-none focus:ring-2 focus:ring-gray-50"
             />
           </div>
@@ -137,10 +136,16 @@ function Signin() {
           </button>
         </form>
         <div className="mb-4">
-          <span className="block text-xs font-medium text-gray-400">
+          <span className="block text-xs font-medium text-gray-400 mb-2">
             Already have account?
             <Link className="text-gray-300 underline mx-1" to="/login">
               Login
+            </Link>
+          </span>
+          <span className="block text-xs font-medium text-gray-400">
+            Register as Captain
+            <Link className="text-gray-300 underline mx-1" to="/signin-captain">
+              Sign Up
             </Link>
           </span>
         </div>

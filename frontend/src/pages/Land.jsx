@@ -1,5 +1,5 @@
 import React from "react";
-import UberLogo from "../UI/uberLogo";
+import UberLogo from "../components/uberLogo";
 
 function Land() {
   return <div>Land</div>;

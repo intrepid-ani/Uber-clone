@@ -9,6 +9,8 @@ import Signin from "./pages/Signin";
 import SigninCaptain from "./pages/Signin-captain";
 import PageNotFound from "./pages/PageNotFound";
 import Layout from "./pages/layout/Layout.jsx";
+import Home from "./pages/Home.jsx";
+import CaptainHome from "./pages/CaptainHome.jsx";
 
 function ErrorBoundary() {
   return <div>Something went wrong. Please try again later.</div>;
@@ -22,6 +24,8 @@ const router = createBrowserRouter(
         <Route path="login" element={<Login />} />
         <Route path="signin" element={<Signin />} />
         <Route path="signin-captain" element={<SigninCaptain />} />
+        <Route path="home" element={<Home />} />
+        <Route path="captain/home" element={<CaptainHome />} />
         <Route path="*" element={<PageNotFound />} />
       </Route>
     </Route>

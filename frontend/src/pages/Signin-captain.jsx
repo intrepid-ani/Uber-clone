@@ -3,6 +3,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { Link } from "react-router";
 import useCaptainData from "../context/CaptainContext";
+import { useNavigate } from "react-router";
 
 function SigninCaptain() {
   const [captain, setCaptain] = useState({
@@ -16,6 +17,7 @@ function SigninCaptain() {
     capacity: "",
   });
 
+  const navigate = useNavigate();
   const { captainContext, setCaptainContext } = useCaptainData();
 
   const handleChange = (e) => {
@@ -51,10 +53,11 @@ function SigninCaptain() {
         toast.success(response.data.message);
         localStorage.setItem("token", response.data.token);
         setCaptainContext(captainData);
-        navigate("/captain-home");
+        navigate("/captain/home");
       }
     } catch (error) {
-      if (error.response && error.response.status === 400) {
+      console.log(error);
+      if (error.response && error.response.status >= 400) {
         toast.error(error.response.data.message || error.response.data.error);
       } else {
         // Handle unexpected errors
