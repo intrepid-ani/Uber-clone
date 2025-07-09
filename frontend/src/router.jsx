@@ -25,7 +25,7 @@ const router = createBrowserRouter(
         <Route path="" element={<Land />} />
         <Route path="login" element={<Login />} />
         <Route path="signin" element={<Signin />} />
-        <Route path="signin-captain" element={<SigninCaptain />} />
+        <Route path="captain/signin" element={<SigninCaptain />} />
         <Route
           path="home"
           element={

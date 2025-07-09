@@ -27,13 +27,6 @@ function ProtectUser({ children }) {
               },
             }
           );
-          console.log({
-            fulllname: {
-              firstName: response.data.fullname.firstName,
-              lastName: response.data.fullname.lastName,
-            },
-            email: response.data.email,
-          });
           setUserContext({
             fullname: {
               firstName: response.data.fullname.firstName,

@@ -42,7 +42,7 @@ function Login() {
         } else {
           localStorage.setItem("userType", "captain");
           setCaptainContext(response);
-          navigate("/captain-home");
+          navigate("/captain/home");
         }
       }
     } catch (error) {
