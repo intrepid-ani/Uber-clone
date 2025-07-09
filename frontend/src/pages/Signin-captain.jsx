@@ -51,8 +51,12 @@ function SigninCaptain() {
 
       if (response.status >= 200) {
         toast.success(response.data.message);
-        localStorage.setItem("token", response.data.token);
+        if (localStorage.getItem("token")) {
+          localStorage.removeItem("token");
+        }
         setCaptainContext(captainData);
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("userType", "captain");
         navigate("/captain/home");
       }
     } catch (error) {

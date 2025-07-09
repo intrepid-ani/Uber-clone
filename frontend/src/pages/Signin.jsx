@@ -39,8 +39,13 @@ function Signin() {
       );
       if (response.status >= 200) {
         toast.success(`${response.data?.message}`);
+        if (localStorage.getItem("token")) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("userType");
+        }
+        setUserContext(userData);
         localStorage.setItem("token", response.data.token);
-        setUserContext(userData); // Use setUserContext here
+        localStorage.setItem("userType", "user");
         navigate("/home");
       }
     } catch (error) {

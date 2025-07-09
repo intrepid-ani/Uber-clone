@@ -37,8 +37,10 @@ function Login() {
         toast.success(response.data.message);
         if (user.userType === "user") {
           setUserContext(response);
+          localStorage.setItem("userType", "user");
           navigate("/home");
         } else {
+          localStorage.setItem("userType", "captain");
           setCaptainContext(response);
           navigate("/captain-home");
         }
